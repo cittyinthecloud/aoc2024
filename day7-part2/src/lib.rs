@@ -19,6 +19,20 @@ fn dec_shift_helper(num: u64) -> u64 {
     }
 }
 
+fn _test_value_internal(test_value: u64, acc: u64, numbers: &[u64]) -> bool {
+    if numbers.is_empty() {
+        return test_value == acc
+    } else {
+        _test_value_internal(test_value, acc + numbers[0], &numbers[1..])||
+        _test_value_internal(test_value, acc * numbers[0], &numbers[1..])||
+        _test_value_internal(test_value, acc * dec_shift_helper(numbers[0]) + numbers[0], &numbers[1..])
+    }
+}
+
+fn check_test_value(test_value: u64, numbers: &[u64]) -> bool {
+    _test_value_internal(test_value, numbers[0], &numbers[1..])
+}
+
 pub fn do_aoc(input: &str) -> u64 {
     let mut numbers = vec![];
     input.lines().filter_map(|line| {
@@ -28,28 +42,6 @@ pub fn do_aoc(input: &str) -> u64 {
         let test_value = str_to_u64(test_value);
         numbers.extend(numbers_str.split(' ').map(str_to_u64));
 
-        let operators = (numbers.len()-1) as u32;
-
-        let first = numbers[0];
-
-        // println!("{test_value}");
-        (0..(3u32.pow(operators))).any(|case| {
-            // println!(" {case}");
-            let mut thing = 1;
-            numbers[1..].iter().fold(first, |acc, &number| {
-                let x: u32 = (case / thing) % 3;
-                // print!("  {x}: {acc} {number} = ");
-                let res = match x {
-                    0 => acc + number,
-                    1 => acc * number,
-                    2 => {
-                        (acc * dec_shift_helper(number)) + number
-                    }
-                    _ =>  { unsafe { unreachable_unchecked() } },
-                };                
-                thing *= 3;
-                res  
-            }) == test_value
-        }).then(|| {test_value})
+        check_test_value(test_value, &numbers).then(|| {test_value})
     }).sum()
 }
