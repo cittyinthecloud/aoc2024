@@ -51,11 +51,11 @@ pub fn do_aoc(input: &str) -> u32 {
     cases
         .lines()
         .filter_map(|case| {
-            let mut line: Vec<_> = case.split(",").map(str_to_u32).collect(); 
+            let mut line: Vec<_> = case.split(",").map(str_to_u32).collect();
             let mut is_unsorted_line = false;
             loop {
                 must_not.clear();
-                
+
                 let mut needs_moved = None;
 
                 for (i, n) in line.iter().enumerate() {

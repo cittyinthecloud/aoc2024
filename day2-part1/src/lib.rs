@@ -19,7 +19,8 @@ pub fn do_aoc(input: String) -> usize {
 
             let first_signum = first.signum();
 
-            matches!(first, 1|2|3|-1|-2|-3) && iter.all(|x| matches!(x, 1|2|3|-1|-2|-3) && x.signum() == first_signum)
+            matches!(first, 1 | 2 | 3 | -1 | -2 | -3)
+                && iter.all(|x| matches!(x, 1 | 2 | 3 | -1 | -2 | -3) && x.signum() == first_signum)
         })
         .count()
 }

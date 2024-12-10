@@ -1,7 +1,7 @@
 #[derive(Clone, Copy, Debug)]
 struct FileBlock {
     count: u8,
-    free_space_after: u8
+    free_space_after: u8,
 }
 
 fn calc_csum(idx: u64, count: u64, id: u64) -> u64 {
@@ -13,7 +13,7 @@ pub fn do_aoc(input: &str) -> u64 {
         .as_bytes()
         .trim_ascii_end()
         .chunks(2)
-        .map(|chunk| FileBlock { 
+        .map(|chunk| FileBlock {
             count: chunk[0] - b'0',
             free_space_after: if let Some(x) = chunk.get(1) {
                 x - b'0'
@@ -58,7 +58,11 @@ pub fn do_aoc(input: &str) -> u64 {
             if end_block_space_needed <= free_space_to_fill {
                 // println!("Fitting in entire block at {cur_block}");
 
-                checksum += calc_csum(cur_block, end_block_space_needed as u64, end_block_idx as u64);
+                checksum += calc_csum(
+                    cur_block,
+                    end_block_space_needed as u64,
+                    end_block_idx as u64,
+                );
                 cur_block += end_block_space_needed as u64;
                 free_space_to_fill -= end_block_space_needed;
                 end_block_idx -= 1;

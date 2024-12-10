@@ -1,6 +1,5 @@
 #![feature(iter_collect_into)]
 
-
 fn str_to_u32(num_str: &str) -> u32 {
     // println!("{num_str}");
     num_str
@@ -11,14 +10,14 @@ fn str_to_u32(num_str: &str) -> u32 {
 
 use std::{collections::HashMap, hash::Hash};
 
-struct Multimap<K,V> {
-    backing: HashMap<K, Vec<V>>
+struct Multimap<K, V> {
+    backing: HashMap<K, Vec<V>>,
 }
 
-impl<K: Hash + Eq, V> Multimap<K,V> {
+impl<K: Hash + Eq, V> Multimap<K, V> {
     fn new() -> Self {
         Self {
-            backing: HashMap::new()
+            backing: HashMap::new(),
         }
     }
 
@@ -36,7 +35,7 @@ impl<K: Hash + Eq, V> Multimap<K,V> {
 }
 
 pub fn do_aoc(input: &str) -> u32 {
-    let (rules, cases) = input.split_once("\n\n").unwrap(); 
+    let (rules, cases) = input.split_once("\n\n").unwrap();
 
     let mut map: Multimap<u32, u32> = Multimap::new();
     for line in rules.lines() {
@@ -49,19 +48,22 @@ pub fn do_aoc(input: &str) -> u32 {
     let mut line = vec![];
     let mut must_not = vec![];
 
-    cases.lines().filter_map(|case| {
-        line.clear();
-        must_not.clear();
-        line.extend(case.split(',').map(str_to_u32));
+    cases
+        .lines()
+        .filter_map(|case| {
+            line.clear();
+            must_not.clear();
+            line.extend(case.split(',').map(str_to_u32));
 
-        for n in &line {
-            if must_not.contains(n) {
-                return None
+            for n in &line {
+                if must_not.contains(n) {
+                    return None;
+                }
+
+                must_not.extend(map.get(n));
             }
-            
-            must_not.extend(map.get(n));
-        }
 
-        Some(line[line.len()/2])
-    }).sum()
+            Some(line[line.len() / 2])
+        })
+        .sum()
 }

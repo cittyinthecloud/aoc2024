@@ -11,7 +11,6 @@ fn calc_csum(idx: u64, count: u64, id: u64) -> u64 {
 }
 
 pub fn do_aoc(input: &str) -> u64 {
-
     let mut cursor = 0;
     let mut file_blocks: Vec<_> = input
         .as_bytes()
@@ -25,26 +24,23 @@ pub fn do_aoc(input: &str) -> u64 {
                 0
             };
 
-            let fb =             FileBlock {
+            let fb = FileBlock {
                 location: cursor,
                 count,
                 total_free_space: free_space,
-                consumed_free_space: 0
+                consumed_free_space: 0,
             };
 
             cursor += count as u64 + free_space as u64;
 
             fb
-        }
-    )
+        })
         .collect();
 
-        // println!("{file_blocks:?}");
+    // println!("{file_blocks:?}");
     let mut checksum: u64 = 0;
 
-
     for end_block_id in (0..file_blocks.len()).rev() {
-
         // println!("Trying block {:?}", file_blocks[end_block_id]);
 
         let mut found = false;
@@ -58,7 +54,9 @@ pub fn do_aoc(input: &str) -> u64 {
             // if this fits into start_block
             if file_size <= space_left {
                 // count blocks are used by the file, consumed blocks we've already used to fit other files.
-                let cur_block = start_block.location + start_block.count as u64 + start_block.consumed_free_space as u64;
+                let cur_block = start_block.location
+                    + start_block.count as u64
+                    + start_block.consumed_free_space as u64;
 
                 // println!("Block fits in {start_block:?}, consuming {file_size} at {cur_block}");
                 checksum += calc_csum(cur_block, file_size as u64, end_block_id as u64);
@@ -66,11 +64,15 @@ pub fn do_aoc(input: &str) -> u64 {
                 found = true;
                 break;
             }
-        } 
+        }
 
         if !found {
             // println!("Block doesn't fit in any block, adding to checksum and moving on...");
-            checksum += calc_csum(file_blocks[end_block_id].location, file_size as u64, end_block_id as u64);
+            checksum += calc_csum(
+                file_blocks[end_block_id].location,
+                file_size as u64,
+                end_block_id as u64,
+            );
         }
     }
 

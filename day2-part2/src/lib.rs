@@ -41,7 +41,7 @@ fn str_to_i32(num_str: &str) -> i32 {
 //                         dbg!(&remaining[2..]);
 //                         eprintln!();
 //                     }
-                
+
 //                     return res;
 //                 } else {
 //                     return false;
@@ -56,28 +56,27 @@ fn str_to_i32(num_str: &str) -> i32 {
 fn diffs_safe(diffs: &mut impl Iterator<Item = i32>) -> bool {
     let first = diffs.next().expect("lines have at least 1 pair of numbers");
     let first_signum = first.signum();
-    matches!(first, 1|2|3|-1|-2|-3) && diffs.all(|x| matches!(x, 1|2|3|-1|-2|-3) && x.signum() == first_signum)
+    matches!(first, 1 | 2 | 3 | -1 | -2 | -3)
+        && diffs.all(|x| matches!(x, 1 | 2 | 3 | -1 | -2 | -3) && x.signum() == first_signum)
 }
 
 fn is_safe(numbers: &[i32]) -> bool {
-    let mut base_iter = numbers.windows(2).map(|x| {
-        x[0]-x[1]
-    });
+    let mut base_iter = numbers.windows(2).map(|x| x[0] - x[1]);
 
     if diffs_safe(&mut base_iter) {
-         return true;
+        return true;
     }
 
     for removed in 0..numbers.len() {
         let (left_side, right_side) = numbers.split_at(removed);
         let right_side = &right_side[1..];
 
-
         // println!("{left_side:?}|{}|{right_side:?}",numbers[removed]);
 
-        let mut the_iter = left_side.iter().chain(right_side.iter()).map_windows(|[x,y]| {
-            *x-*y
-        });
+        let mut the_iter = left_side
+            .iter()
+            .chain(right_side.iter())
+            .map_windows(|[x, y]| *x - *y);
         if diffs_safe(&mut the_iter) {
             // println!("good");
             return true;
@@ -85,7 +84,6 @@ fn is_safe(numbers: &[i32]) -> bool {
     }
     // println!("bad");
 
-    
     return false;
     // todo!();
 }
@@ -96,8 +94,7 @@ pub fn do_aoc(input: String) -> usize {
         .lines()
         .filter(|line| {
             buffer.clear();
-            buffer.extend(line.split(" ")
-            .map(str_to_i32));
+            buffer.extend(line.split(" ").map(str_to_i32));
             is_safe(&buffer)
         })
         .count()
