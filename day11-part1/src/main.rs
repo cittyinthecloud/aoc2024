@@ -1,9 +1,9 @@
 use std::fs;
 
-use day1_part2::do_aoc;
+use day11_part1::do_aoc;
 
 fn main() {
     let file = fs::read_to_string("input").unwrap();
-    let res = do_aoc(file);
+    let res = do_aoc(&file);
     println!("{res}")
 }

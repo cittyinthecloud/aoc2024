@@ -1,4 +1,4 @@
-use std::{fs, hint::black_box};
+use std::fs;
 
 use day1_part1::do_aoc;
 

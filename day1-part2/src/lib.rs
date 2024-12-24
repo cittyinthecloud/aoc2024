@@ -58,7 +58,7 @@ impl<K: Eq + Hash> Extend<K> for IterCounter<K> {
 pub fn do_aoc(input: String) -> u32 {
     let lines = input.lines();
     // let count = lines.clone().count();
-    let (mut a, mut b): (Vec<_>, IterCounter<_>) = lines
+    let (a, b): (Vec<_>, IterCounter<_>) = lines
         .map(|line| {
             let (a, b) = (&line[0..5], &line[5 + 3..]);
             (str_to_u32(a), str_to_u32(b))
