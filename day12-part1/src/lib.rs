@@ -1,5 +1,4 @@
 use bitvec::prelude::*;
-use std::num::NonZeroU8;
 
 struct Board<'input> {
     backing: &'input [u8],

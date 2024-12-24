@@ -1,4 +1,4 @@
-use std::{cell::OnceCell, collections::HashMap, hash::Hash};
+use std::collections::HashMap;
 
 fn get_digits(digit_count: u64) -> u32 {
     digit_count.checked_ilog10().unwrap_or(0) + 1
